@@ -1,0 +1,41 @@
+import sys
+import os
+import time
+import shutil
+import csv
+import datetime
+import openpyxl
+
+FNAME = "Batch Summary "
+
+os.chdir(os.path.dirname(sys.argv[1]))
+
+if len(sys.argv) == 1:   # if no argument passed to program
+    sys.exit("Please drag a file into program to continue")  # Exits execution of script
+ARG = len(sys.argv)
+print(str(ARG-1) + " Arguments")
+
+
+# wb = openpyxl.load_workbook("XML Checks.xlsx")
+wb = openpyxl.Workbook()
+wb.save(FNAME + str(datetime.datetime.now().date()) + ".xlsx")
+ws = wb["Sheet"]
+print("Data Rows: " + str(len(ws['A']) - 1))
+
+ws.cell(row=1, column=1).value = "Case No."
+ws.cell(row=1, column=2).value = "Batch"
+ws.cell(row=1, column=3).value = "Date of Check: " + str(datetime.datetime.now().date())
+
+for x in range(ARG - 1):
+    print(os.path.basename(sys.argv[x+1]))
+    print(x + 1)
+    FILES = os.listdir(sys.argv[x+1])
+    print(FILES)
+    print(len(FILES))
+    for y in range(len(FILES)):
+        Ro = len(ws['A']) + 1
+        ws.cell(row=Ro, column=1).value = FILES[y].replace(".xml", "")
+        ws.cell(row=Ro, column=2).value = os.path.basename(sys.argv[x+1])
+
+wb.save(FNAME + str(datetime.datetime.now().date()) + ".xlsx")
+print("Data Rows: " + str(len(ws['A']) - 1))
