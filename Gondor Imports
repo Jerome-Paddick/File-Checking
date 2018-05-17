@@ -1,0 +1,72 @@
+import sys
+import os
+import time
+import shutil
+
+def ed(BAD_WORD, REPLACE):
+    FILES = str.replace(lDir[y], ".xml", "  Edited.xml")
+    OUT = filedata.replace(BAD_WORD, REPLACE)
+    print(BAD_WORD)
+    print(REPLACE)
+    # Write the file out a gain
+    with open(FILES, 'w', encoding='utf-8') as file:
+        file.write(OUT)
+    print(FILES)
+
+if len(sys.argv) == 1:   # if no argument passed to program
+    sys.exit("Please drag a file into program to continue")  # Exits execution of script
+
+ARG = len(sys.argv)
+print(str(ARG-1) + " Arguments")
+for x in range(ARG - 1):
+    print(sys.argv[x+1])
+    lDir = os.listdir(sys.argv[x+1])
+    os.chdir(sys.argv[x+1])
+    for y in range(len(lDir)):
+        PATH = sys.argv[x + 1]
+        print("LDIRY " + lDir[y])
+        print("PATH", PATH)
+        if os.path.isdir(os.path.join(PATH, lDir[y])):
+            pass
+        elif os.path.basename(lDir[y]).find("MASTER") > -1:
+            print(os.path.basename(PATH))
+            os.makedirs(os.path.dirname(PATH) + "\\" + os.path.basename(PATH) + " (Master)", exist_ok=True)
+            file.close()
+            shutil.move(lDir[y], os.path.dirname(PATH) + "\\" + os.path.basename(PATH) + " (Master)")
+        elif lDir[y].find(" Edited") > -1:
+            pass
+        elif lDir[y].find(".zip") > -1:
+            pass
+        elif lDir[y].find(".rtf") > -1:
+            print("RTF Document")
+            os.makedirs(PATH + "\\RTF-Document", exist_ok=True)
+            file.close()
+            shutil.move(lDir[y], PATH + "\\RTF-Document")
+        else:
+            with open(lDir[y], 'r',encoding='utf-8') as file:  # Read argument passed to python
+                os.makedirs(os.path.dirname(PATH) + "\\Uploaded", exist_ok=True)
+                filedata = file.read()
+                # if file contains exactly 2 of "string"
+                # then replace with "replace"
+                if filedata.count("SDHTP") == 2:
+                    ed("SDHTP","SDH")
+                elif filedata.count("NEURIMP") == 2:
+                    ed("NEURIMP","NEU")
+                elif filedata.count("CATALENT") == 2:
+                    ed("CATALENT", "CAT")
+                elif filedata.count("PETNETP") == 2:
+                    ed("PETNETP", "PET")
+                elif filedata.count("DIMP") == 2:
+                    ed("DIMP", "DIM")
+                elif filedata.count("COMBEP") == 2:
+                    ed("COMBEP", "COM")
+                elif filedata.count("MENTP") == 2:
+                    ed("MENTP", "MEN")
+                elif filedata.count("\"SPL\"") == 2:
+                    ed("\"SPL\"", "\"SPL\"")
+
+
+                print("No Replacement Detected for file ")
+
+
+print("end")
